@@ -5,5 +5,12 @@ class GridBean {
         this.size = size;
         this.border = border;
     }
+
+    toString() {
+        return "Rows: " + this.rows + " | " +
+        "Columns: " + this.columns + " | " +
+        "Size: " + this.size + " | " +
+        "Border: " + this.border + " | ";
+    }
 }
 export default GridBean;

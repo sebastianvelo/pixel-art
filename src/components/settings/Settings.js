@@ -129,43 +129,49 @@ class Settings extends Component {
         let size = $(getId(canvasCfg.cellSize.range)).val();
         let border = $(getId(canvasCfg.border.range)).val();
         let grid = new GridBean(height, width, size, border);
-        this.setGridSize();
         this.props.changeGrid(grid);
+        this.setGridSize(grid);
     }
 
     /* modifies values in the website with the grid in props and calls setCellSize() */
-    setGridSize() {
+    setGridSize(grid) {
         let setInFront = (range, label, axis) => {
-            let value = this.props.grid[axis];
+            let value = grid[axis];
             $(getId(label)).text(value);
             $(getId(range)).val(value);
         };
-        setInFront(canvasCfg.column.range, canvasCfg.column.label, "columns");
         setInFront(canvasCfg.row.range, canvasCfg.row.label, "rows");
+        setInFront(canvasCfg.column.range, canvasCfg.column.label, "columns");
         setInFront(canvasCfg.cellSize.range, canvasCfg.cellSize.label, "size");
         setInFront(canvasCfg.border.range, canvasCfg.border.label, "border");
-        this.setCellSize();
+        this.setCellSize(grid);
         setDownloadImage();
     }
 
     /* Modifies the width and height of cells with the grid in props */
-    setCellSize() {
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("width", this.props.grid.size);
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("height", this.props.grid.size);
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("border", this.props.grid.border + "px solid black");
+    setCellSize(grid) {
+        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("width", grid.size);
+        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("height", grid.size);
+        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("border", grid.border + "px solid black");
     }
 
     componentDidMount() {
         this.setColors();
-        this.setGridSize();
+        this.setGridSize(this.props.grid);
         this.setMode(true);
     }
 
 
+    componentDidUpdate(prevProps, prevState) {
+        if (this.props.grid.toString() !== prevProps.grid.toString()) {
+            this.setCellSize(this.props.grid);
+        }
+    }
+
     render() {
         return (
             <div>
-                <Topnav 
+                <Topnav
                     setMode={this.setMode.bind(this)}
                     eraser={this.eraser.bind(this)}
                     resetCanvas={this.resetCanvas.bind(this)}
