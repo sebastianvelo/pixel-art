@@ -6,7 +6,7 @@ function SavedColors(props) {
         <div>
             <h5>Colores guardados</h5>
             <div>
-                <Grid rows={4} columns={12} funct={props.copyColor} id={canvasCfg.htmlSettings.idSavedColors} />
+                <Grid rows={6} columns={12} funct={props.copyColor} id={canvasCfg.htmlSettings.idSavedColors} />
             </div>
         </div>
     )
