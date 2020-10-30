@@ -1,5 +1,5 @@
 import $ from "jquery";
-import { getId, getClass, getProperty } from "../util/JQueryUtil";
+import { getClass, getProperty, setInFront } from "../util/JQueryUtil";
 import CanvasCfg from "../classes/CanvasCfg";
 
 const canvasCfg = new CanvasCfg();
@@ -27,15 +27,10 @@ function getLastCellIDSavedColors() {
 
 /* modifies values in the website with the grid in props and calls setCellSize() */
 function setGridSize(grid) {
-    let setInFront = (range, label, axis) => {
-        let value = grid[axis];
-        $(getId(label)).text(value);
-        $(getId(range)).val(value);
-    };
-    setInFront(canvasCfg.row.range, canvasCfg.row.label, "rows");
-    setInFront(canvasCfg.column.range, canvasCfg.column.label, "columns");
-    setInFront(canvasCfg.cellSize.range, canvasCfg.cellSize.label, "size");
-    setInFront(canvasCfg.border.range, canvasCfg.border.label, "border");
+    setInFront(canvasCfg.row.range, canvasCfg.row.label, grid.rows);
+    setInFront(canvasCfg.column.range, canvasCfg.column.label, grid.columns);
+    setInFront(canvasCfg.cellSize.range, canvasCfg.cellSize.label, grid.size);
+    setInFront(canvasCfg.border.range, canvasCfg.border.label, grid.border);
     setCellSize(grid);
 }
 
@@ -48,7 +43,7 @@ function setCellSize(grid) {
 
 export {
     canvasCfg,
-    getCellId, getCellClass,
+    getCellId, getCellClass, 
     resetCanvas, getLastCellIDSavedColors,
     setCellSize, setGridSize
 };
