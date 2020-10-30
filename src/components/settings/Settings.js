@@ -5,7 +5,7 @@ import $ from "jquery";
 import ColorBean from "../../classes/ColorBean";
 import GridBean from "../../classes/GridBean";
 import { rgbCfg, defaultSavedColors } from "../../util/ColorUtil";
-import { canvasCfg } from "../../util/GridUtil";
+import { canvasCfg, resetCanvas, getLastCellIDSavedColors, setCellSize, setGridSize } from "../../util/GridUtil";
 import { getId, getClass, getProperty } from "../../util/JQueryUtil";
 
 import Sidenav from "./sidenav/Sidenav";
@@ -32,7 +32,7 @@ class Settings extends Component {
         state.eraser = false;
         this.setState({ state });
         return print ?
-            this.props.setMode(this.colorizeCell.bind(this)) :
+            this.props.setMode(this.colorizeCellWithSelectedColor.bind(this)) :
             this.props.setMode(this.copyColor.bind(this));
     }
 
@@ -40,91 +40,73 @@ class Settings extends Component {
     /* COLORS */
 
     /* Receives a color in parameter and modifies the selectedColor attribute in state */
-    changeColorGeneric(color) {
+    setColorInState(color) {
         let state = this.state;
         state.selectedColor = color;
         this.setState({ state });
         this.setColors();
     }
 
-    /* Creates a color with values of ranges, and calls changeColorGeneric() */
+    /* Creates a color with values of ranges, and calls setColorInState() */
     changeColor() {
         let r = $(getId(rgbCfg.r.range)).val();
         let g = $(getId(rgbCfg.g.range)).val();
         let b = $(getId(rgbCfg.b.range)).val();
         let color = new ColorBean(r, g, b);
-        this.changeColorGeneric(color);
+        this.setColorInState(color);
     }
 
-    /* Creates a white color, and calls changeColorGeneric() */
+    /* Creates a white color, and calls setColorInState() */
     eraser() {
         let state = this.state;
         state.eraser = !state.eraser;
         this.setState({ state });
     }
 
-    /* Sets a white backgroundColor in canvas */
-    resetCanvas() {
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("background-color", "white");
-    }
-
     /*  Receives a cellId in parameter and 
     modifies its backgroundColor with the selectedColor attribute in state */
-    colorizeCell(cellId) {
+    colorizeCellWithSelectedColor(cellId) {
         if (this.state.eraser)
-            this.colorizeCellGeneric(cellId, new ColorBean(255, 255, 255));
+            this.colorizeCell(cellId, new ColorBean(255, 255, 255));
         else
-            this.colorizeCellGeneric(cellId, this.state.selectedColor)
+            this.colorizeCell(cellId, this.state.selectedColor)
     }
 
     /*  Receives a cellId in parameter and 
     modifies its backgroundColor with the color in parameter */
-    colorizeCellGeneric(cellId, color) {
+    colorizeCell(cellId, color) {
         $(getId(cellId)).css("background-color", color.getRGB());
         setDownloadImage();
     }
 
     /* Receives a cellId in parameter, creates a color with its backgroundColor and
-    calls changeColorGeneric() */
+    calls setColorInState() */
     copyColor(cellId) {
         let bgColor = document.getElementById(cellId).style.backgroundColor;
         let color = new ColorBean();
         color.setRGB(bgColor);
         this.setMode(true);
-        this.changeColorGeneric(color);
+        this.setColorInState(color);
     }
 
-    /* Looking for the last cellId without backgroundColor and calls colorizeCell() */
+    /* Looking for the last cellId without backgroundColor and calls colorizeCellWithSelectedColor() */
     saveColor() {
         let colorIsAlreadySaved = () => this.state.savedColors.find(color => color.equals(this.state.selectedColor));
         if (colorIsAlreadySaved()) {
             return;
         }
-        let lastId = this.getLastCellIDSavedColors();
-        this.colorizeCell(lastId);
+        let lastId = getLastCellIDSavedColors();
+        this.colorizeCellWithSelectedColor(lastId);
 
         let state = this.state;
         state.savedColors.push(this.state.selectedColor);
         this.setState({ state });
     }
 
-    /* Returns the last cellId without backgroundColor */
-    getLastCellIDSavedColors() {
-        let cells = $(getProperty("owner", canvasCfg.htmlSettings.idSavedColors));
-        let index = 0;
-        for (let i = 0; i < cells.length; i++) {
-            if (cells[i].style.backgroundColor.length === 0) {
-                index = i;
-                break;
-            }
-        }
-        return cells[index].id;
-    }
-
     fillDefaultSavedColors() {
         defaultSavedColors.forEach(color => {
-            let lastId = this.getLastCellIDSavedColors();
-            this.colorizeCellGeneric(lastId, color);
+            let lastId = getLastCellIDSavedColors();
+            this.colorizeCell(lastId, color);
         })
         let state = this.state;
         Array.prototype.push.apply(state.savedColors, defaultSavedColors);
@@ -141,7 +123,7 @@ class Settings extends Component {
         setInFront(rgbCfg.r.range, rgbCfg.r.label, "r");
         setInFront(rgbCfg.g.range, rgbCfg.g.label, "g");
         setInFront(rgbCfg.b.range, rgbCfg.b.label, "b");
-        this.colorizeCell("selectedColor");
+        this.colorizeCellWithSelectedColor("selectedColor");
     }
 
     /* |||||||||||||||||||||||||||||| */
@@ -155,41 +137,20 @@ class Settings extends Component {
         let border = $(getId(canvasCfg.border.range)).val();
         let grid = new GridBean(height, width, size, border);
         this.props.changeGrid(grid);
-        this.setGridSize(grid);
-    }
-
-    /* modifies values in the website with the grid in props and calls setCellSize() */
-    setGridSize(grid) {
-        let setInFront = (range, label, axis) => {
-            let value = grid[axis];
-            $(getId(label)).text(value);
-            $(getId(range)).val(value);
-        };
-        setInFront(canvasCfg.row.range, canvasCfg.row.label, "rows");
-        setInFront(canvasCfg.column.range, canvasCfg.column.label, "columns");
-        setInFront(canvasCfg.cellSize.range, canvasCfg.cellSize.label, "size");
-        setInFront(canvasCfg.border.range, canvasCfg.border.label, "border");
-        this.setCellSize(grid);
+        setGridSize(grid);
         setDownloadImage();
     }
 
-    /* Modifies the width and height of cells with the grid in props */
-    setCellSize(grid) {
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("width", grid.size);
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("height", grid.size);
-        $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("border", grid.border + "px solid black");
-    }
-
     componentDidMount() {
+        setGridSize(this.props.grid);
         this.setColors();
-        this.setGridSize(this.props.grid);
-        this.setMode(true);
         this.fillDefaultSavedColors();
+        this.setMode(true);
     }
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.grid.toString() !== prevProps.grid.toString()) {
-            this.setCellSize(this.props.grid);
+            setCellSize(this.props.grid);
         }
     }
 
@@ -201,10 +162,10 @@ class Settings extends Component {
                     changeColor={this.changeColor.bind(this)}
                     saveColor={this.saveColor.bind(this)}
                     copyColor={this.copyColor.bind(this)}
-                    isMobile={this.props.isMobile}
                     setMode={this.setMode.bind(this)}
                     eraser={this.eraser.bind(this)}
-                    resetCanvas={this.resetCanvas.bind(this)}
+                    resetCanvas={resetCanvas}
+                    isMobile={this.props.isMobile}
                     printMode={this.state.printMode}
                     eraserMode={this.state.eraser}
                 />
