@@ -4,11 +4,10 @@ import $ from "jquery";
 
 import ColorBean from "../../classes/ColorBean";
 import GridBean from "../../classes/GridBean";
-import { rgbCfg } from "../../util/ColorUtil";
+import { rgbCfg, defaultSavedColors } from "../../util/ColorUtil";
 import { canvasCfg } from "../../util/GridUtil";
 import { getId, getClass, getProperty } from "../../util/JQueryUtil";
 
-import Topnav from "./topnav/Topnav";
 import Sidenav from "./sidenav/Sidenav";
 
 class Settings extends Component {
@@ -65,7 +64,13 @@ class Settings extends Component {
     /*  Receives a cellId in parameter and 
     modifies its backgroundColor with the selectedColor attribute in state */
     colorizeCell(cellId) {
-        $(getId(cellId)).css("background-color", this.state.selectedColor.getRGB());
+        this.colorizeCellGeneric(cellId, this.state.selectedColor)
+    }
+
+    /*  Receives a cellId in parameter and 
+    modifies its backgroundColor with the color in parameter */
+    colorizeCellGeneric(cellId, color) {
+        $(getId(cellId)).css("background-color", color.getRGB());
         setDownloadImage();
     }
 
@@ -104,6 +109,16 @@ class Settings extends Component {
             }
         }
         return cells[index].id;
+    }
+
+    fillDefaultSavedColors() {
+        defaultSavedColors.forEach(color => {
+            let lastId = this.getLastCellIDSavedColors();
+            this.colorizeCellGeneric(lastId, color);
+        })
+        let state = this.state;
+        Array.prototype.push.apply(state.savedColors, defaultSavedColors);
+        this.setState({ state });
     }
 
     /* modifies values in the website and the background color of selectedColor's cell */
@@ -159,8 +174,8 @@ class Settings extends Component {
         this.setColors();
         this.setGridSize(this.props.grid);
         this.setMode(true);
+        this.fillDefaultSavedColors();
     }
-
 
     componentDidUpdate(prevProps, prevState) {
         if (this.props.grid.toString() !== prevProps.grid.toString()) {
@@ -171,17 +186,15 @@ class Settings extends Component {
     render() {
         return (
             <div>
-                <Topnav
-                    setMode={this.setMode.bind(this)}
-                    eraser={this.eraser.bind(this)}
-                    resetCanvas={this.resetCanvas.bind(this)}
-                />
                 <Sidenav
                     changeSize={this.changeSize.bind(this)}
                     changeColor={this.changeColor.bind(this)}
                     saveColor={this.saveColor.bind(this)}
                     copyColor={this.copyColor.bind(this)}
                     isMobile={this.props.isMobile}
+                    setMode={this.setMode.bind(this)}
+                    eraser={this.eraser.bind(this)}
+                    resetCanvas={this.resetCanvas.bind(this)}
                 />
             </div>
         );

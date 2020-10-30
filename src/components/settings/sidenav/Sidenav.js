@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 
+import Tools from "./tools/Tools";
 import ColorSettings from "./colorsettings/ColorSettings";
 import CanvasSettings from "./canvassettings/CanvasSettings";
 
@@ -16,6 +17,11 @@ class Sidenav extends Component {
     render() {
         return (
             <div className="sidenav">
+                <Tools
+                    setMode={this.props.setMode}
+                    eraser={this.props.eraser}
+                    resetCanvas={this.props.resetCanvas}
+                />
                 <ColorSettings
                     changeColor={this.props.changeColor}
                     saveColor={this.props.saveColor}

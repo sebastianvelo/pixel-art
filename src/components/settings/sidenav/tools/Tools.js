@@ -1,6 +1,7 @@
 function Tools(props) {
     return (
-        <div id="tools">
+        <div>
+            <center>
                 <button onClick={() => props.setMode(true)}>
                     <i className='fas fa-paint-brush'></i>
                 </button>
@@ -18,6 +19,7 @@ function Tools(props) {
                         <i className='fas fa-save'></i>
                     </button>
                 </a>
+            </center>
         </div>
     )
 }
