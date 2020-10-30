@@ -1,14 +1,25 @@
 function Tools(props) {
+    let classNameActive = "active";
     return (
         <div>
+            <br/>
             <center>
-                <button onClick={() => props.setMode(true)}>
+                <button
+                    onClick={() => props.setMode(true)}
+                    className={!props.eraserMode && props.printMode ? classNameActive : ""}
+                >
                     <i className='fas fa-paint-brush'></i>
                 </button>
-                <button onClick={() => props.setMode(false)}>
+                <button
+                    onClick={() => props.setMode(false)}
+                    className={!props.eraserMode && !props.printMode ? classNameActive : ""}
+                >
                     <i className='fas fa-eye-dropper'></i>
                 </button>
-                <button onClick={() => props.eraser()}>
+                <button
+                    onClick={() => props.eraser()}
+                    className={props.eraserMode ? classNameActive : ""}
+                >
                     <i className='fas fa-eraser'></i>
                 </button>
                 <button onClick={() => props.resetCanvas()}>

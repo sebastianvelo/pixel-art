@@ -16,7 +16,9 @@ class Settings extends Component {
 
         this.state = {
             selectedColor: new ColorBean(rgbCfg.r.default, rgbCfg.g.default, rgbCfg.b.default),
-            savedColors: []
+            savedColors: [],
+            eraser: false,
+            printMode: true
         }
     }
 
@@ -25,6 +27,10 @@ class Settings extends Component {
 
     /* Receives a boolean in parameter and calls setMode() function of App.js */
     setMode(print) {
+        let state = this.state;
+        state.printMode = print;
+        state.eraser = false;
+        this.setState({ state });
         return print ?
             this.props.setMode(this.colorizeCell.bind(this)) :
             this.props.setMode(this.copyColor.bind(this));
@@ -52,8 +58,9 @@ class Settings extends Component {
 
     /* Creates a white color, and calls changeColorGeneric() */
     eraser() {
-        let color = new ColorBean(255, 255, 255);
-        this.changeColorGeneric(color);
+        let state = this.state;
+        state.eraser = !state.eraser;
+        this.setState({ state });
     }
 
     /* Sets a white backgroundColor in canvas */
@@ -64,7 +71,10 @@ class Settings extends Component {
     /*  Receives a cellId in parameter and 
     modifies its backgroundColor with the selectedColor attribute in state */
     colorizeCell(cellId) {
-        this.colorizeCellGeneric(cellId, this.state.selectedColor)
+        if (this.state.eraser)
+            this.colorizeCellGeneric(cellId, new ColorBean(255, 255, 255));
+        else
+            this.colorizeCellGeneric(cellId, this.state.selectedColor)
     }
 
     /*  Receives a cellId in parameter and 
@@ -195,6 +205,8 @@ class Settings extends Component {
                     setMode={this.setMode.bind(this)}
                     eraser={this.eraser.bind(this)}
                     resetCanvas={this.resetCanvas.bind(this)}
+                    printMode={this.state.printMode}
+                    eraserMode={this.state.eraser}
                 />
             </div>
         );

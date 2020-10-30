@@ -21,6 +21,8 @@ class Sidenav extends Component {
                     setMode={this.props.setMode}
                     eraser={this.props.eraser}
                     resetCanvas={this.props.resetCanvas}
+                    printMode={this.props.printMode}
+                    eraserMode={this.props.eraserMode}
                 />
                 <ColorSettings
                     changeColor={this.props.changeColor}
