@@ -77,13 +77,13 @@
 
 .modal-header {
 	padding: 2px 16px;
-	background-color:   var(--main-bg-color);;
+	background-color:   var(--main-bg-color);
 	color: white;
 }
 
 .modal-body {
-    padding: 2px 16px;
-    background-color: whitesmoke;
+    padding: 5% 0px;
+    background-color: #eee;
 }
 
 .modal-footer {

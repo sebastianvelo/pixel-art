@@ -1,6 +1,6 @@
 
 :root {
-	--main-bg-color: rgba(6, 84, 173, 0.9);
+	--main-bg-color: rgba(6, 84, 173, 1);
 	--main-txt-color: black;
 }
 
@@ -44,7 +44,6 @@
 
 
 /* On smaller screens, where height is less than 450px, change the style of the sidebar (less padding and a smaller font size) */
-
 @media screen and (max-height: 450px) {
 	.sidenav {
 		padding-top: 15px;
