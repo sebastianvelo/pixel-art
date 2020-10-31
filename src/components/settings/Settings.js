@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import html2canvas from "html2canvas";
-import $ from "jquery";
 
 import ColorBean from "../../classes/ColorBean";
-import GridBean from "../../classes/GridBean";
 import Sidenav from "./sidenav/Sidenav";
 
-import { rgbCfg, defaultSavedColors, colorizeCell, setColors } from "../../util/ColorUtil";
-import { canvasCfg, resetCanvas, getLastCellIDSavedColors, setCellSize, setGridSize } from "../../util/GridUtil";
-import { getId } from "../../util/JQueryUtil";
+import { setDownloadImage } from "../../util/Html2CanvasUtil"; 
+import { rgbCfg, defaultSavedColors, colorizeCell, setColors, getColorFromRanges } from "../../util/ColorUtil";
+import { resetCanvas, getLastCellIDSavedColors, setCellSize, setGridSize, getGridFromRanges } from "../../util/GridUtil";
 
 class Settings extends Component {
     constructor(props) {
@@ -38,21 +35,17 @@ class Settings extends Component {
     /* |||||||||||||||||||||||||||||| */
     /* COLORS */
     /* Receives a color in parameter and modifies the selectedColor attribute in state */
-    setColorInState(color) {
+    setSelectedColor(color) {
         let state = this.state;
         state.selectedColor = color;
         this.setState({ state });
         setColors(this.state.selectedColor);
     }
-    /* Creates a color with values of ranges, and calls setColorInState() */
+    /* Creates a color with values of ranges, and calls setSelectedColor() */
     changeColor() {
-        let r = $(getId(rgbCfg.r.range)).val();
-        let g = $(getId(rgbCfg.g.range)).val();
-        let b = $(getId(rgbCfg.b.range)).val();
-        let color = new ColorBean(r, g, b);
-        this.setColorInState(color);
+        this.setSelectedColor(getColorFromRanges());
     }
-    /* Creates a white color, and calls setColorInState() */
+    /* Creates a white color, and calls setSelectedColor() */
     eraser() {
         let state = this.state;
         state.eraser = !state.eraser;
@@ -69,13 +62,13 @@ class Settings extends Component {
     }
 
     /* Receives a cellId in parameter, creates a color with its backgroundColor and
-    calls setColorInState() */
+    calls setSelectedColor() */
     copyColor(cellId) {
         let bgColor = document.getElementById(cellId).style.backgroundColor;
         let color = new ColorBean();
         color.setRGB(bgColor);
         this.setMode(true);
-        this.setColorInState(color);
+        this.setSelectedColor(color);
     }
     /* Looking for the last cellId without backgroundColor and calls colorizeCellWithSelectedColor() */
     saveColor() {
@@ -104,11 +97,7 @@ class Settings extends Component {
     /* SIZE */
     /* Create a grid with values of ranges and calls changeGrid() function of App.js and setGridSize() */
     changeSize() {
-        let width = $(getId(canvasCfg.column.range)).val();
-        let height = $(getId(canvasCfg.row.range)).val();
-        let size = $(getId(canvasCfg.cellSize.range)).val();
-        let border = $(getId(canvasCfg.border.range)).val();
-        let grid = new GridBean(height, width, size, border);
+        let grid = getGridFromRanges();
         this.props.changeGrid(grid);
         setGridSize(grid);
         setDownloadImage();
@@ -117,14 +106,16 @@ class Settings extends Component {
     componentDidMount() {
         setGridSize(this.props.grid);
         setColors(this.state.selectedColor);
+        setDownloadImage();
         this.fillDefaultSavedColors();
         this.setMode(true);
     }
-    componentDidUpdate(prevProps, prevState) {
+    componentDidUpdate(prevProps) {
         if (this.props.grid.toString() !== prevProps.grid.toString()) {
             setCellSize(this.props.grid);
         }
     }
+
     render() {
         return (
             <div>
@@ -145,11 +136,3 @@ class Settings extends Component {
     }
 }
 export default Settings;
-
-
-function setDownloadImage() {
-    html2canvas(document.querySelector(getId(canvasCfg.htmlSettings.idCanvas))).then(canvas => {
-        var image = canvas.toDataURL("image/png").replace("image/png", "image/octet-stream");
-        $("#saveImage").attr("href", image);
-    });
-}

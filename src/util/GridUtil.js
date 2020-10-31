@@ -1,16 +1,13 @@
 import $ from "jquery";
-import { getClass, getProperty, setInFront } from "../util/JQueryUtil";
+import { getId, getClass, getProperty, setInFront } from "../util/JQueryUtil";
+import GridBean from "../classes/GridBean";
 import CanvasCfg from "../classes/CanvasCfg";
 
 const canvasCfg = new CanvasCfg();
 const getCellId = (x, y, gridId) => gridId + x + "-" + y;
 const getCellClass = (gridId) => canvasCfg.htmlSettings.classCell + gridId;
-
-
 /* Sets a white backgroundColor in canvas */
-function resetCanvas() {
-    $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("background-color", "white");
-}
+const resetCanvas = () => { $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("background-color", "white"); };
 
 /* Returns the last cellId without backgroundColor */
 function getLastCellIDSavedColors() {
@@ -41,9 +38,18 @@ function setCellSize(grid) {
     $(getClass(canvasCfg.htmlSettings.classCellCanvas)).css("border", grid.border + "px solid black");
 }
 
+function getGridFromRanges(){
+    let width = $(getId(canvasCfg.column.range)).val();
+    let height = $(getId(canvasCfg.row.range)).val();
+    let size = $(getId(canvasCfg.cellSize.range)).val();
+    let border = $(getId(canvasCfg.border.range)).val();
+    return new GridBean(height, width, size, border);
+}
+
 export {
     canvasCfg,
     getCellId, getCellClass, 
     resetCanvas, getLastCellIDSavedColors,
-    setCellSize, setGridSize
+    setCellSize, setGridSize,
+    getGridFromRanges
 };

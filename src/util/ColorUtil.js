@@ -6,24 +6,26 @@ import ColorCfg from "../classes/ColorCfg";
 
 const rgbCfg = new ColorCfg();
 const defaultSavedColors = [
-    new ColorBean(0, 0, 0),
+    new ColorBean(0, 0, 0), //Negro
+    new ColorBean(127, 127, 127), //Gris oscuro
+    new ColorBean(136, 0, 21), //Bordo
+    new ColorBean(237, 38, 26), //Rojo
+    new ColorBean(255, 127, 39), //Naranja
+    new ColorBean(255, 242, 0), //Amarillo
+    new ColorBean(34, 177, 76), //Verde
+    new ColorBean(0, 162, 232), //Celeste
+    new ColorBean(63, 72, 204), //Azul violeta
+    new ColorBean(163, 73, 164), //Violeta
     new ColorBean(255, 255, 255),
-
-    new ColorBean(255, 0, 0),
-    new ColorBean(0, 255, 0),
-    new ColorBean(0, 0, 255),
-
-    new ColorBean(255, 0, 255),
-    new ColorBean(255, 255, 0),
-    new ColorBean(0, 255, 255),
-
-    new ColorBean(100, 255, 100),
-    new ColorBean(255, 100, 100),
-    new ColorBean(100, 100, 255),
-
-    new ColorBean(100, 150, 200),
-    new ColorBean(200, 150, 100),
-    new ColorBean(150, 200, 100),
+    new ColorBean(195, 195, 195),
+    new ColorBean(185, 122, 87),
+    new ColorBean(255, 174, 201),
+    new ColorBean(255, 201, 14),
+    new ColorBean(239, 228, 176),
+    new ColorBean(181, 230, 29),
+    new ColorBean(153, 217, 234),
+    new ColorBean(112, 146, 190),
+    new ColorBean(200, 191, 231)
 ]
 
 /*  Receives a cellId in parameter and 
@@ -39,4 +41,11 @@ function setColors(color) {
     colorizeCell("selectedColor", color);
 }
 
-export { rgbCfg, defaultSavedColors, colorizeCell, setColors }
+function getColorFromRanges(){
+    let r = $(getId(rgbCfg.r.range)).val();
+    let g = $(getId(rgbCfg.g.range)).val();
+    let b = $(getId(rgbCfg.b.range)).val();
+    return new ColorBean(r, g, b);
+}
+
+export { rgbCfg, defaultSavedColors, colorizeCell, setColors, getColorFromRanges }
