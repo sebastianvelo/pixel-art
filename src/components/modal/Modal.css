@@ -91,3 +91,21 @@
 	background-color: #5cb85c;
 	color: white;
 }
+
+.btn-ok {
+	background-color: yellowgreen;
+	font-weight: bolder;
+}
+.btn-ok:hover {
+	background-color: rgb(200, 233, 135);
+	color: black;
+}
+
+.btn-cancel {
+	background-color: lightcoral;
+	font-weight: bolder;
+}
+.btn-cancel:hover {
+	background-color: rgb(238, 174, 174);
+	color: black;
+}

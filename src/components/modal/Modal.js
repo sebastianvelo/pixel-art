@@ -9,8 +9,8 @@ function Modal(props) {
             </div>
             <div className="modal-body">
                 <center>
-                    <button onClick={() => doSomething(props.id, props.funct)}>Confirmar</button>
-                    <button onClick={() => closeModal(props.id)}>Cancelar</button>
+                    <button className="btn-ok" onClick={() => doSomething(props.id, props.funct)}>Confirmar</button>
+                    <button className="btn-cancel" onClick={() => closeModal(props.id)}>Cancelar</button>
                 </center>
             </div>
         </div>
