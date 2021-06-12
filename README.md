@@ -8,8 +8,6 @@ https://sebastianvelo.github.io/pixel-art/
 ## 🛠️
 
 * [ReactJS](https://es.reactjs.org/)  
-* [NodeJS](https://nodejs.org/es/)
-* [ExpressJS](https://expressjs.com/es/) 
 * [CSS](https://developer.mozilla.org/es/docs/Web/CSS) 
-
-
+* [html2canvas](https://html2canvas.hertzen.com/) 
+* [getscreen](https://www.npmjs.com/package/react-getscreen) 
