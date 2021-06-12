@@ -1,12 +1,13 @@
-# Pixel-Art
+# Pixel Art
 
-Este [Pixel Art](https://es.wikipedia.org/wiki/Pixel_art) fue creado con ReactJS por [Sebastian Velo](https://www.linkedin.com/in/sebastian-velo/).
+_¡Una aplicación web para hacer pixel art!_
 
-## Tecnologías utilizadas
+## :link:
+https://sebastianvelo.github.io/pixel-art/
 
-### `ReactJS`
-### `HTML`
-### `CSS`
-### `jQuery`
-### [`html2canvas`](https://html2canvas.hertzen.com/)
-### [`getscreen`](https://www.npmjs.com/package/react-getscreen)
+## 🛠️
+
+* [ReactJS](https://es.reactjs.org/)  
+* [CSS](https://developer.mozilla.org/es/docs/Web/CSS) 
+* [html2canvas](https://html2canvas.hertzen.com/) 
+* [getscreen](https://www.npmjs.com/package/react-getscreen) 
