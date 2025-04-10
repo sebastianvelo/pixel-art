@@ -1,13 +1,15 @@
 import React, { Component } from "react";
 import { withGetScreen } from 'react-getscreen';
-import "./App.css";
-import "./components/grid/Grid.css";
+import $ from "jquery";
 
 import Settings from "./components/settings/Settings";
 import Main from "./components/main/Main";
 import GridBean from "./classes/GridBean";
 import { canvasCfg } from "./util/GridUtil";
+import { getId } from "./util/JQueryUtil";
 
+import "./App.css";
+import "./components/grid/Grid.css";
 
 class App extends Component {
   constructor(props) {
@@ -19,6 +21,7 @@ class App extends Component {
         canvasCfg.column.default,
         canvasCfg.cellSize.default,
         canvasCfg.border.default),
+      scale: 1
     }
   }
 
@@ -36,6 +39,24 @@ class App extends Component {
     this.setState({ state });
   }
 
+  zoomGrid(e) {
+    let state = this.state;
+
+    if (e.originalEvent.wheelDelta / 120 > 0  && state.grid.size < 15 /* && state.scale < 7*/){
+      //state.scale += 1;
+      state.grid.size++;
+    }
+    else if (e.originalEvent.wheelDelta / 120 < 0  && state.grid.size > 1 /* && state.scale > 1*/){
+      //state.scale -= 1;
+      state.grid.size--;
+    }
+    else {
+      return;
+    }
+    //$(getId(canvasCfg.htmlSettings.idCanvas)).css('transform', "scale(" + state.scale + ")");
+    this.changeGrid(state.grid);
+  }
+
   PixelArt() {
     return (
       <div>
@@ -51,6 +72,10 @@ class App extends Component {
         <h1>Por favor, voltea el dispositivo para poder usar PixelArt</h1>
       </div>
     );
+  }
+
+  componentDidMount() {
+    $(getId(canvasCfg.htmlSettings.idCanvas)).on("wheel", (e) => this.zoomGrid(e));
   }
 
   render() {

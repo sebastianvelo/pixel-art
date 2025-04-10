@@ -12,7 +12,7 @@ class CanvasCfg {
             txt: "Ancho",
             range: "width",
             label: "labelW",
-            default: 15,
+            default: 20,
             min: 1,
             max: 30
         };

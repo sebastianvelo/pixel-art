@@ -11,11 +11,11 @@
 .dropdown-content {
     display: none;
     position: absolute;
-    width: 90%;
+    width: 75%;
     z-index: 1;
 	background-color: #222;
     color: white;
-    padding: 5%;
+    padding: 12%;
     border-radius: 5%;
   }
   

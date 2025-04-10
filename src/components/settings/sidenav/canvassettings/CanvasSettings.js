@@ -5,7 +5,7 @@ import { canvasCfg } from "../../../../util/GridUtil";
 import { getId } from "../../../../util/JQueryUtil";
 
 function CanvasSettings(props) {
-    const divId = "bodySizeSettings";
+    const divId = "bodyCanvasSettings";
     let item = canvasCfg.column;
     item.max = props.isMobile ? 20 : item.max;
     return (
