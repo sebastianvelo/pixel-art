@@ -10,11 +10,11 @@ interface ColorPaletteProps {
 const ColorPalette: React.FC<ColorPaletteProps> = ({ colors, currentColor, onSelectColor }) => {
     return (
         <div className="grid grid-cols-10 gap-1">
-            {colors.map((color) => (
+            {colors.map((color, i) => (
                 <ColorSwatch
-                    key={color}
+                    key={`${color}-${i}`}
                     color={color}
-                    isSelected={color === currentColor}
+                    isSelected={color != '' && color === currentColor}
                     onClick={() => onSelectColor(color)}
                 />
             ))}

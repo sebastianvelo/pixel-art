@@ -11,7 +11,7 @@ interface ToolbarProps {
 }
 
 const Toolbar: React.FC<ToolbarProps> = ({ isMenuOpen, app, openEraseConfirmationModal }) => (
-    <div className={`backdrop-blur-xl bg-gradient-to-br from-purple-600/50 to-indigo-900/50 sm:from-purple-600 sm:to-indigo-900 text-white py-2 px-4 shadow-sm ${isMenuOpen ? "fixed top-16 rounded-md w-full" : "hidden md:block"}`}>
+    <div className={`backdrop-blur-xl bg-white/80 text-white py-2 px-4 shadow-sm ${isMenuOpen ? "fixed top-16 rounded-md w-full" : "hidden md:block"}`}>
         <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
             <div className="flex flex-wrap gap-4 items-center self-center sm:self-auto">
                 <div className="flex flex-col">

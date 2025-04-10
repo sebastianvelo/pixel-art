@@ -27,7 +27,7 @@ export default function Home() {
     };
 
     return (
-        <div className="h-screen w-screen flex flex-col bg-indigo-900/90 overflow-hidden text-white">
+        <div className="h-screen w-screen flex flex-col bg-purple-300 overflow-hidden text-white">
             <Nav toggleMenu={toggleMenu} />
             <Toolbar
                 isMenuOpen={isMenuOpen}
