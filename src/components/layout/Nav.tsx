@@ -14,7 +14,7 @@ const Nav = ({ toggleMenu }: NavProps) => (
                     ))}
                 </div>
             </div>
-            <h1 className="text-2xl font-bold tracking-tight">Pixel Art</h1>
+            <h1 className="text-2xl font-bold tracking-tight">pixartsx</h1>
         </div>
         <button
             className="md:hidden text-white bg-indigo-800 hover:bg-indigo-900 px-3 py-2 rounded-full shadow-md flex items-center gap-1 text-sm"
