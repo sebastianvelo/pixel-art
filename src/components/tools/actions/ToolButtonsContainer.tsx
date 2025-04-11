@@ -5,7 +5,6 @@ import ToolButton from "./ToolButton";
 
 const TOOLS = [
     { id: CanvasTool.DRAW, icon: Icons.Draw, label: "Draw" },
-    { id: CanvasTool.COPY, icon: Icons.ColorPicker, label: "Pick" },
     { id: CanvasTool.ERASE, icon: Icons.Eraser, label: "Erase" }
 ];
 

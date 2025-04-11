@@ -3,6 +3,7 @@ import { AppPixels } from "../../hooks/usePixels";
 import ActionButtons from '../tools/actions/ActionButtons';
 import ColorSection from '../tools/color/ColorSection';
 import ToolButtonsContainer from '../tools/actions/ToolButtonsContainer';
+import { CanvasTool } from '../../types/types';
 
 interface ToolbarProps {
     isMenuOpen: boolean;
@@ -24,7 +25,9 @@ const Toolbar: React.FC<ToolbarProps> = ({ isMenuOpen, app, openEraseConfirmatio
                     <ColorSection
                         currentColor={app.color.current}
                         savedColors={app.color.saved}
+                        activeTool={app.tool.active}
                         onColorChange={app.color.pick}
+                        onSelectTool={() => app.tool.change(CanvasTool.COPY)}
                         onSaveColor={app.color.save}
                     />
                 </div>
