@@ -56,6 +56,7 @@ Follow these steps to set up the project locally.
    ```
 
 ## Project Structure
+```
 pixel-art/
 ├── src/
 │   ├── components/    # Reusable React components
@@ -67,3 +68,4 @@ pixel-art/
 ├── package.json       # Project dependencies and scripts
 ├── tailwind.config.js # Tailwind CSS configuration
 └── README.md          # Project documentation
+```
